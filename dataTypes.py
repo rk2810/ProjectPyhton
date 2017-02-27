@@ -12,4 +12,6 @@ mystring = "Hellooooo"
 print(mystring)
 mystring = 'helloo'
 print(mystring)
-
+#Apostrophe handling
+mystring = "What's up dawg !"
+print(mystring)
