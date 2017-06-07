@@ -1,0 +1,5 @@
+cd ~;
+echo entering directory;
+cd pycharm-community-2017.1.3/bin;
+echo Attmpting to run;
+bash pycharm.sh;
