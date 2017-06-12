@@ -3,11 +3,7 @@
 coins = raw_input("Enter the number of coins : ")
 coins = int(coins)
 # The logic
-if coins > 2:
-    if coins % 3 is 0:
-        print "Winner is Rohit"
-    else:
-        print "Winner is Puneet "
+if coins % 3 is 0:
+    print "Winner is Rohit"
 else:
-    print "Winner is Punnet"
-
+    print "Winner is Puneet"
