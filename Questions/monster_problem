@@ -23,8 +23,10 @@ for i in range(0, 100):
     brr.append(d + c*i)
 
 same_values = set(arr) & set(brr)
+# same_values create an array with all same values using set()
 
 if len(same_values) >= 1:
     print min(same_values)
+# the min () helped in finding the least value in array cause if it's more than least value, they'd prolly be dead
 else:
     print('-1')
