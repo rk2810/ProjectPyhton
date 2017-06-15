@@ -1,0 +1,30 @@
+# Rick and Morty monster problem
+
+# inputs
+
+a = raw_input("Enter value of a : ")
+b = raw_input("Enter value of b : ")
+c = raw_input("Enter value of c : ")
+d = raw_input("Enter value of d : ")
+
+# Type conversion to int
+
+a = int(a)
+b = int(b)
+c = int(c)
+d = int(d)
+arr = []
+brr = []
+
+# logic
+
+for i in range(0, 100):
+    arr.append(b + a*i)
+    brr.append(d + c*i)
+
+same_values = set(arr) & set(brr)
+
+if len(same_values) >= 1:
+    print min(same_values)
+else:
+    print('-1')
