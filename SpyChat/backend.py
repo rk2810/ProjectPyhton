@@ -1,8 +1,9 @@
 # This contains all functions as a backend framework for spychat app
 # Imports
 from steganography.steganography import Steganography
-from datetime import datetime
 
+# the global variable
+current_username = []
 
 spy_credentials = {
     'username': ['admin'],
@@ -86,8 +87,12 @@ def view_friends():
 
 
 def edit_profile_name():
+    print "your current name is > "
+
     new_name = raw_input("Enter new name : ")
+    print "New name set to > " + new_name
     edit_profile()
+
 
 def edit_status():
     print "bla bla"
@@ -191,6 +196,9 @@ def existing():
         x = spy_credentials['username'].index(spy_username)
         if spy_pass == spy_credentials['password'][x]:
             print "Welcome " + spy_username
+            current_username.append(spy_username)
+            print "Current user added to session is > "
+            print current_username[0]
             chat()
         else:
             print "Incorrect password... Exiting!"
