@@ -11,7 +11,8 @@ spy_credentials = {
     'name': ['fSociety'],
     'spy rating': ['5'],
     'spy salutation': ['Mr.'],
-    'spy status': ['Working !']
+    'spy status': ['Working !'],
+    'appended_friend_list': []
     }
 
 friend_list = ['Trenton', 'Romero', 'Darlene', 'Elliot']
@@ -25,9 +26,15 @@ def add_friend():
         question = raw_input("Are you sure you want to add " + " " + spy_credentials['name'][x] + " ? (y/n)")
         if question is "y" or "Y":
             print "Adding..."
+<<<<<<< HEAD
+            spy_credentials['appended_friend_list'].append(spy_credentials['name'][x])
+            print "Your new friend list : "
+            print ", ".join(friend_list) + "," + " , ".join(spy_credentials['appended_friend_list'])
+=======
             appended_friend_list.append(friend_added_username)
             print "Your new friend list : "
             print ", ".join(friend_list) + "," + " , ".join(appended_friend_list)
+>>>>>>> 0014c3aae1c518494b4439f49ce8fd88be746409
             chat()
         else:
             print "friend not added."
