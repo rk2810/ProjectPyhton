@@ -15,6 +15,7 @@ spy_credentials = {
     }
 
 friend_list = ['Trenton', 'Romero', 'Darlene', 'Elliot']
+appended_friend_list = []
 
 
 def add_friend():
@@ -24,9 +25,9 @@ def add_friend():
         question = raw_input("Are you sure you want to add " + " " + spy_credentials['name'][x] + " ? (y/n)")
         if question is "y" or "Y":
             print "Adding..."
-            friend_list.append(friend_added_username)
+            appended_friend_list.append(friend_added_username)
             print "Your new friend list : "
-            print friend_list
+            print ", ".join(friend_list) + "," + " , ".join(appended_friend_list)
             chat()
         else:
             print "friend not added."
@@ -81,6 +82,9 @@ def view_friends():
                 chat()
                 ans = False
             if ans == "4":
+                while len(current_username) > 0:
+                    current_username.pop()
+                print "Destroying data and clearing cache..."
                 exit()
             if ans != "":
                 print "Invalid selection, try again"
@@ -183,6 +187,9 @@ def chat():
 
         elif ans == "7":
             print "Exiting"
+            print "Destroying data and clearing cache..."
+            while len(current_username) > 0:
+                current_username.pop()
             exit()
 
         elif ans != "":
