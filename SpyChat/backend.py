@@ -1,8 +1,9 @@
 # This contains all functions as a backend framework for spychat app
-# Imports
+
+# Imports:
 
 from steganography.steganography import Steganography
-
+from termcolor import colored
 # Static variable
 current_username = []
 temp_recipient = []
@@ -327,6 +328,10 @@ def password():     # password validator
     else:
         print "password saved !"
         spy_credentials['password'].append(new_password)
+        spy_credentials['name'].append("")
+        spy_credentials['spy salutation'].append("")
+        spy_credentials['spy status'].append("")
+        spy_credentials['spy rating'].append("")
         print "redirecting you to main page, login as existing user."
         main()
 
