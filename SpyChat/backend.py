@@ -1,23 +1,102 @@
 # This contains all functions as a backend framework for spychat app
 # Imports
+
 from steganography.steganography import Steganography
 
-# the global variable
+# Static variable
 current_username = []
-spy_credentials = {
-    'username': ['admin'],
-    'password': ['password'],
-    'name': ['fSociety'],
-    'spy rating': ['5'],
-    'spy salutation': ['Mr.'],
-    'spy status': ['Working !']
-    }
-
+temp_recipient = []
 friend_list = ['Trenton', 'Romero', 'Darlene', 'Elliot']
 appended_friend_list = []
 
+# Dictionaries
+spy_credentials = {
+    'username': ['admin', 'secondary'],
+    'password': ['password', 'pass'],
+    'name': ['fSociety', 'No Name'],
+    'spy rating': ['5', '5'],
+    'spy salutation': ['Mr.', 'Master'],
+    'spy status': ['Working !', 'Alive']
+    }
+chats = {
+    'sender': [],
+    'recipient': [],
+    'message': []
+}
 
-def view_profile_fancy():
+# Functions
+
+
+def view_messages_received():    # function to view received messages
+    print "Received messages > "
+    for i in range(0, len(chats['recipient'])):
+        if chats['recipient'][i] == current_username[0]:
+            print "Sender : " + chats['sender'][i]
+            print "Chat : " + chats['message'][i]
+            view_message_options()
+        else:
+            print "No chats found !"
+            view_message_options()
+
+
+def view_messages_sent():   # function to view sent messages
+    print "Sent messages >"
+    for i in range(0, len(chats['recipient'])):
+        if chats['sender'][i] == current_username[0]:
+            print "Sent to : " + chats['recipient'][i]
+            print "Chat : " + chats['message'][i]
+        else:
+            print "No chats found !"
+            view_message_options()
+
+
+def view_message_options():     # message options
+    ans = True
+    while ans:
+        print """
+                1.Sent messages 
+                2.Received messages
+                3.back
+                """
+        ans = raw_input("What would you like to do ? ")
+        if ans == "1":
+            view_messages_sent()
+        elif ans == "2":
+            view_messages_received()
+        elif ans == "3":
+            chat()
+        elif ans != "":
+            print "Invalid choice... try again!"
+
+
+def send_message():     # send message control function
+    message = raw_input("Enter the message to encode : ")
+    path_image = "input.jpg"
+    output_path = "message.jpg"
+    Steganography.encode(path_image, output_path, message)
+    user_index = spy_credentials['username'].index(current_username[0])
+    chats['sender'].append(spy_credentials['username'][user_index])
+    chats['recipient'].append(temp_recipient[0])
+    chats['message'].append(message)
+    print "Message sent..."
+    print "Clearing traces and temporary files..."
+    temp_recipient.pop(0)
+    print "Done ! All set..."
+    chat()
+
+
+def send_message_validation():      # username validator for chats
+    get_user = raw_input("Username of recipient : ")
+    if get_user in spy_credentials['username']:
+        temp_recipient.append(get_user)
+        send_message()
+    else:
+        print "Wrong username"
+        print "Moving back ..."
+        chat()
+
+
+def view_profile_fancy():       # not so fancy view profile zone
     print "your current profile > "
     index = spy_credentials['username'].index(current_username[0])
     print "Name : " + spy_credentials['name'][index]
@@ -28,7 +107,7 @@ def view_profile_fancy():
     edit_profile()
 
 
-def add_friend():
+def add_friend():    # add friend controls
     friend_added_username = raw_input("Enter username of your friend : ")
     if friend_added_username in spy_credentials['username']:
         x = spy_credentials['username'].index(friend_added_username)
@@ -51,7 +130,7 @@ def add_friend():
             chat()
 
 
-def remove_friend():
+def remove_friend():    # remove friend controls
     print "Your current friends are > "
     print friend_list + appended_friend_list
     friend_remove_user = raw_input("Enter name of friend to be removed ")
@@ -68,7 +147,7 @@ def remove_friend():
             chat()
 
 
-def view_friends():
+def view_friends():     # view friends control
     print "This is your current friend list > "
     print friend_list
     question = raw_input("Would you like to edit friends ? (y/n) ")
@@ -101,7 +180,7 @@ def view_friends():
                 print "Invalid selection, try again"
 
 
-def edit_profile_name():
+def edit_profile_name():    # editing profile: name
     print "your current name is > "
     index = spy_credentials['username'].index(current_username[0])
     print "Name : " + spy_credentials['name'][index]
@@ -112,7 +191,7 @@ def edit_profile_name():
     edit_profile()
 
 
-def edit_status():
+def edit_status():  # editing profile: status
     index = spy_credentials['username'].index(current_username[0])
     print "Current status : " + spy_credentials['spy status'][index]
     new_status = raw_input("Enter new status(1~50 length) : ")
@@ -122,7 +201,7 @@ def edit_status():
     edit_profile()
 
 
-def edit_salutation():
+def edit_salutation():  # editing profile: salutation
     print "Your current salutation in use is > "
     index = spy_credentials['username'].index(current_username[0])
     print spy_credentials['spy salutation'][index]
@@ -132,7 +211,7 @@ def edit_salutation():
     edit_profile()
 
 
-def edit_profile():
+def edit_profile():     # editing profile options
     ans = True
     while ans:
         print """
@@ -154,7 +233,7 @@ def edit_profile():
             "Invalid selection..."
 
 
-def edit_profile_options():
+def edit_profile_options():     # edit profile lead control
     ans = True
     while ans:
         print """
@@ -170,7 +249,7 @@ def edit_profile_options():
             print "invalid selection ...."
 
 
-def chat():
+def chat():     # chat options and main interface maneuver from main()
     ans = True
     while ans:
         print """
@@ -186,10 +265,12 @@ def chat():
         if ans == "1":
             print "Send message control line > "
             ans = False
+            send_message_validation()
 
         elif ans == "2":
-            print "View message control line > "
+            print "Messages options : > "
             ans = False
+            view_message_options()
 
         elif ans == "3":
             print "View profile control line >"
@@ -222,11 +303,12 @@ def chat():
             print "Not Valid Choice Try again"
 
 
-def existing():
+def existing():     # credential check for existing users
     spy_username = raw_input("Enter your username : ")
     spy_pass = raw_input("Enter password : ")
     if spy_username in spy_credentials['username']:
         x = spy_credentials['username'].index(spy_username)
+        print x
         if spy_pass == spy_credentials['password'][x]:
             print "Welcome " + spy_username
             current_username.append(spy_username)
@@ -237,7 +319,7 @@ def existing():
             print "Incorrect password... Exiting!"
 
 
-def password():
+def password():     # password validator
     new_password = raw_input("Enter a password for your account ( 6 char min) : ")
     if len(new_password) < 6:
         print "password too short, try again..."
@@ -249,7 +331,7 @@ def password():
         main()
 
 
-def new_user():
+def new_user():     # add new user controls
     new_username = str(raw_input("Enter a username for yourself (make it unique) : "))
     if new_username in spy_credentials['username']:
         print "username already exists.... try again "
@@ -260,7 +342,7 @@ def new_user():
         password()
 
 
-def main():
+def main():     # the home of it all
     ans = True
     while ans:
         print """
