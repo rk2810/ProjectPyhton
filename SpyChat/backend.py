@@ -4,19 +4,28 @@ from steganography.steganography import Steganography
 
 # the global variable
 current_username = []
-
 spy_credentials = {
     'username': ['admin'],
     'password': ['password'],
     'name': ['fSociety'],
     'spy rating': ['5'],
     'spy salutation': ['Mr.'],
-    'spy status': ['Working !'],
-    'appended_friend_list': []
+    'spy status': ['Working !']
     }
 
 friend_list = ['Trenton', 'Romero', 'Darlene', 'Elliot']
 appended_friend_list = []
+
+
+def view_profile_fancy():
+    print "your current profile > "
+    index = spy_credentials['username'].index(current_username[0])
+    print "Name : " + spy_credentials['name'][index]
+    print "Salutation : " + spy_credentials['spy salutation'][index]
+    print "Status : " + spy_credentials['spy status'][index]
+    print "DATA FETCHED !"
+    print "moving back..."
+    edit_profile()
 
 
 def add_friend():
@@ -28,10 +37,7 @@ def add_friend():
             print "Adding..."
             spy_credentials['appended_friend_list'].append(spy_credentials['name'][x])
             print "Your new friend list : "
-            print ", ".join(friend_list) + "," + " , ".join(spy_credentials['appended_friend_list'])
-            appended_friend_list.append(friend_added_username)
-            print "Your new friend list : "
-            print ", ".join(friend_list) + "," + " , ".join(appended_friend_list)
+            print ", ".join(friend_list) + " ," + " , ".join(appended_friend_list)
             chat()
         else:
             print "friend not added."
@@ -47,9 +53,9 @@ def add_friend():
 
 def remove_friend():
     print "Your current friends are > "
-    print friend_list
+    print friend_list + appended_friend_list
     friend_remove_user = raw_input("Enter name of friend to be removed ")
-    if friend_remove_user in friend_list:
+    if friend_remove_user in friend_list or appended_friend_list:
         remove = friend_list.index(friend_remove_user)
         friend_list.pop(remove)
         print "Your friend list is now >"
@@ -84,7 +90,8 @@ def view_friends():
                 ans = False
             if ans == "3":
                 chat()
-                ans = False
+                ans = \
+                    False
             if ans == "4":
                 while len(current_username) > 0:
                     current_username.pop()
@@ -96,19 +103,32 @@ def view_friends():
 
 def edit_profile_name():
     print "your current name is > "
-
+    index = spy_credentials['username'].index(current_username[0])
+    print "Name : " + spy_credentials['name'][index]
     new_name = raw_input("Enter new name : ")
+    spy_credentials['name'][index] = new_name
     print "New name set to > " + new_name
+    print "Saved ! Moving back..."
     edit_profile()
 
 
 def edit_status():
-    print "bla bla"
+    index = spy_credentials['username'].index(current_username[0])
+    print "Current status : " + spy_credentials['spy status'][index]
+    new_status = raw_input("Enter new status(1~50 length) : ")
+    spy_credentials['spy status'][index] = new_status
+    print "New status set to > " + new_status
+    print "Saved ! Moving back..."
     edit_profile()
 
 
 def edit_salutation():
-    print "bla bla"
+    print "Your current salutation in use is > "
+    index = spy_credentials['username'].index(current_username[0])
+    print spy_credentials['spy salutation'][index]
+    new_salutation = raw_input("Enter new salutation : ")
+    spy_credentials['spy salutation'][index] = new_salutation
+    print "Saved ! Moving back..."
     edit_profile()
 
 
@@ -174,6 +194,7 @@ def chat():
         elif ans == "3":
             print "View profile control line >"
             ans = False
+            view_profile_fancy()
 
         elif ans == "4":
             print "Edit profile control line >"
@@ -183,11 +204,12 @@ def chat():
         elif ans == "5":
             print "Set status control line >"
             ans = False
+            edit_status()
 
         elif ans == "6":
             print "View friend control line >"
-            view_friends()
             ans = False
+            view_friends()
 
         elif ans == "7":
             print "Exiting"
@@ -263,4 +285,3 @@ def main():
 
         elif ans != "":
             print "Not Valid Choice Try again"
-
