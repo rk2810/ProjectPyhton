@@ -1,9 +1,9 @@
 # This contains all functions as a backend framework for spychat app
 
 # Imports:
-
 from steganography.steganography import Steganography
 from termcolor import colored
+
 # Static variable
 current_username = []
 temp_recipient = []
@@ -31,10 +31,22 @@ chats = {
 def view_messages_received():    # function to view received messages
     print "Received messages > "
     for i in range(0, len(chats['recipient'])):
-        if chats['recipient'][i] == current_username[0]:
+        if len(chats['message'][i]) > 100:      # remove spy if talking too much
+            print "Spy " + chats['sender'][i] + " has been removed for talking too much, you " \
+                                                   "won't be receiving from him."
+            if chats['sender'][i] in appended_friend_list:
+                del chats['sender'][i]
+                del chats['recipient'][i]
+                del chats['message'][i]
+                index = appended_friend_list.index(chats['sender'][i])
+                appended_friend_list.pop(index)
+                view_messages_received()
+            else:
+                view_message_options()
+        elif chats['recipient'][i] == current_username[0]:
             print "Sender : " + chats['sender'][i]
             print "Chat : " + chats['message'][i]
-            view_message_options()
+            view_messages_received()
         else:
             print "No chats found !"
             view_message_options()
@@ -74,16 +86,20 @@ def send_message():     # send message control function
     message = raw_input("Enter the message to encode : ")
     path_image = "input.jpg"
     output_path = "message.jpg"
-    Steganography.encode(path_image, output_path, message)
-    user_index = spy_credentials['username'].index(current_username[0])
-    chats['sender'].append(spy_credentials['username'][user_index])
-    chats['recipient'].append(temp_recipient[0])
-    chats['message'].append(message)
-    print "Message sent..."
-    print "Clearing traces and temporary files..."
-    temp_recipient.pop(0)
-    print "Done ! All set..."
-    chat()
+    if len(message) < 0:        # a validation, so that there is a message to be encrypted for sure
+        print "Your message is Invalid.. Try again"
+        send_message()
+    else:
+        Steganography.encode(path_image, output_path, message)
+        user_index = spy_credentials['username'].index(current_username[0])
+        chats['sender'].append(spy_credentials['username'][user_index])
+        chats['recipient'].append(temp_recipient[0])
+        chats['message'].append(message)
+        print "Message sent..."
+        print "Clearing traces and temporary files..."
+        temp_recipient.pop(0)
+        print "Done ! All set..."
+        chat()
 
 
 def send_message_validation():      # username validator for chats
@@ -115,7 +131,7 @@ def add_friend():    # add friend controls
         question = raw_input("Are you sure you want to add " + " " + spy_credentials['name'][x] + " ? (y/n)")
         if question is "y" or "Y":
             print "Adding..."
-            spy_credentials['appended_friend_list'].append(spy_credentials['name'][x])
+            appended_friend_list.append(spy_credentials['name'][x])
             print "Your new friend list : "
             print ", ".join(friend_list) + " ," + " , ".join(appended_friend_list)
             chat()
@@ -150,7 +166,7 @@ def remove_friend():    # remove friend controls
 
 def view_friends():     # view friends control
     print "This is your current friend list > "
-    print friend_list
+    print friend_list + appended_friend_list
     question = raw_input("Would you like to edit friends ? (y/n) ")
     if question is "y" or "Y":
         ans = True
@@ -260,7 +276,8 @@ def chat():     # chat options and main interface maneuver from main()
             4.Edit Profile
             5.Set status
             6.view friend(s)
-            7.Exit
+            7.Logout
+            8.Exit
             """
         ans = raw_input("What would you like to do? ")
         if ans == "1":
@@ -294,6 +311,11 @@ def chat():     # chat options and main interface maneuver from main()
             view_friends()
 
         elif ans == "7":
+            print "Logout control line >"
+            ans = False
+            main()
+
+        elif ans == "8":
             print "Exiting"
             print "Destroying data and clearing cache..."
             while len(current_username) > 0:
